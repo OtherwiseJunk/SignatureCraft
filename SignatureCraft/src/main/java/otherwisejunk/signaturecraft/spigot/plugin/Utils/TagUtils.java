@@ -41,13 +41,6 @@ public final class TagUtils{
         item = nbtItem.getItem();
         ItemMeta imd = item.getItemMeta();
 
-        List<String> lore = GetSignatureLore(usernames);
-        logger.info("Got a lore object!");
-        logger.info("Entry Count:"+lore.size());
-        for (String loreLine: lore){
-            logger.info("Lore Line: "+loreLine);
-        }
-
         imd.setLore(GetSignatureLore(usernames));
         item.setItemMeta(imd);
         return item;
@@ -102,7 +95,9 @@ public final class TagUtils{
         loreList.add("Signed by:");
 
         for (String username: usernames){
-            loreList.add(username);
+            if(!username.isBlank() && !username.isEmpty()){
+                loreList.add(username);
+            } 
         }
 
         return loreList;
