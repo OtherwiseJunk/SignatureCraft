@@ -62,8 +62,7 @@ public final class TagUtils{
 
                 item = nbtItem.getItem();
                 ItemMeta imd = item.getItemMeta();
-                if(usernames.size() > 0){
-                    
+                if(usernames.size() > 0){                    
                     imd.setLore(GetSignatureLore(usernames));                    
                 }
                 else{
@@ -90,9 +89,9 @@ public final class TagUtils{
         loreList.add("Signed by:");
 
         for (String username: usernames){
-            if(!username.isBlank() && !username.isEmpty()){
+            if(!username.trim().isEmpty()){
                 loreList.add(username);
-            } 
+            }
         }
 
         return loreList;

@@ -6,7 +6,7 @@
 
   <groupId>otherwisejunk.signaturecraft.spigot.plugin</groupId>
   <artifactId>SignatureCraft</artifactId>
-  <version>0.0.1</version>
+  <version>0.9.5</version>
   <packaging>jar</packaging>
 
   <name>SignatureCraft</name>
