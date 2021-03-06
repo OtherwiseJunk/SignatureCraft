@@ -1,0 +1,3 @@
+main: dev.cibmc.spigot.blankplugin.SignatureCraft
+name: BlankPlugin
+version: 0.1
