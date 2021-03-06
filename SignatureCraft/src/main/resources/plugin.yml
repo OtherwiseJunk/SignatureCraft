@@ -1,0 +1,11 @@
+main: otherwisejunk.signaturecraft.spigot.plugin.SignatureCraft
+name: SignatureCraft
+version: 0.0.1
+depend: [NBTAPI]
+commands:
+  sign:
+    description: Signs the item (or stack of items) in your main hand.
+    usage: /sign (Only works while an item is in your main hand)
+  unsign:
+    description: Removes your signature from the item (or stack of items) in your main hand.
+    usage: /unsign (Only works while an item is in your main hand)
