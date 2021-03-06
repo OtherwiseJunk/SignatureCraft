@@ -37,13 +37,13 @@ public class SignatureCraft extends JavaPlugin
 
         if(command.getName().equalsIgnoreCase(CommandConstants.SignatureCommand)){
             getLogger().info("Is itemInHand null? "+String.valueOf(itemInHand == null));
-                ItemStack modifiedItem = TagUtils.AddSignatureToItem(itemInHand, player, getLogger());
+                ItemStack modifiedItem = TagUtils.AddSignatureToItem(itemInHand, player);
                 player.getInventory().remove(itemInHand);
                 player.getInventory().addItem(modifiedItem);
                 return true;
         }
         else if(command.getName().equalsIgnoreCase(CommandConstants.RemoveSignatureCommand)){            
-            ItemStack modifiedItem = TagUtils.RemoveSignatureFromItem(itemInHand, player, getLogger());
+            ItemStack modifiedItem = TagUtils.RemoveSignatureFromItem(itemInHand, player);
             player.getInventory().remove(itemInHand);
                 player.getInventory().addItem(modifiedItem);
                 return true;            

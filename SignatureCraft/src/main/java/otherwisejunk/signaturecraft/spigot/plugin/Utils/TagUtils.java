@@ -13,15 +13,12 @@ import de.tr7zw.nbtapi.NBTItem;
 
 
 public final class TagUtils{
-    public static ItemStack AddSignatureToItem(ItemStack item, Player signer, Logger logger){
-        logger.info("Is itemStack null? "+String.valueOf(item == null));
+    public static ItemStack AddSignatureToItem(ItemStack item, Player signer){        
         NBTItem nbtItem = new NBTItem(item);    
         ArrayList<String> usernames = new ArrayList<String>();
         String signerName = signer.getName();
-        logger.info("Signer's Name: "+signerName);
 
         String signatureCSV = GetSignatureFromItem(nbtItem);
-        logger.info("SignatureCSV: "+signatureCSV);
         // If we have an existing object for this tag, add the user to the existing tag!
         if(signatureCSV != null){            
             usernames = ArrayListFromCSV(signatureCSV);
@@ -49,13 +46,11 @@ public final class TagUtils{
         List<String> fixedLengthList = Arrays.asList(csv.split(","));
         return new ArrayList<String>(fixedLengthList);
     }
-    public static ItemStack RemoveSignatureFromItem(ItemStack item, Player signer, Logger logger){
+    public static ItemStack RemoveSignatureFromItem(ItemStack item, Player signer){
         NBTItem nbtItem = new NBTItem(item);
         ArrayList<String> usernames = new ArrayList<String>();     
 
-
         String signatureCSV = GetSignatureFromItem(nbtItem);
-        logger.info("SignatureCSV: "+signatureCSV);
         // If we have an existing object for this tag, remove the user!
         if(signatureCSV != null){
             usernames = ArrayListFromCSV(signatureCSV);
