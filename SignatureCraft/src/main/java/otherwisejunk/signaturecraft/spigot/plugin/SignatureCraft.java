@@ -31,7 +31,7 @@ public class SignatureCraft extends JavaPlugin
         final Player player = (Player) sender;
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         //If the triggering player doesn't have an item in hand we don't care, either.
-        if (itemInHand == null || itemInHand.getType() == Material.AIR) {            
+        if (itemInHand == null || itemInHand.getItemMeta() == null) {            
             return true;
         }
 
