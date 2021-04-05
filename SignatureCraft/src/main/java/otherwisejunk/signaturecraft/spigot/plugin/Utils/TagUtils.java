@@ -20,7 +20,7 @@ public final class TagUtils{
 
         String signatureCSV = GetSignatureFromItem(nbtItem);
         // If we have an existing object for this tag, add the user to the existing tag!
-        if(signatureCSV != null){            
+        if(signatureCSV != ""){            
             usernames = ArrayListFromCSV(signatureCSV);
             
             // UNLESS they're already there, of course.
@@ -44,6 +44,7 @@ public final class TagUtils{
     }
     public static ArrayList<String> ArrayListFromCSV(String csv){        
         List<String> fixedLengthList = Arrays.asList(csv.split(","));
+        fixedLengthList.removeAll(TagConstants.EmptyListValues);
         return new ArrayList<String>(fixedLengthList);
     }
     public static ItemStack RemoveSignatureFromItem(ItemStack item, Player signer){
@@ -85,7 +86,7 @@ public final class TagUtils{
     }
 
     public static List<String> GetSignatureLore(List<String> usernames){
-        List<String> loreList = new ArrayList<String>();
+        List<String> loreList = new ArrayList<String>();        
         loreList.add("Signed by:");
 
         for (String username: usernames){
