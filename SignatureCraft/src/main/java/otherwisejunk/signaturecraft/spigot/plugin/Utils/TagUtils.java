@@ -3,68 +3,92 @@ package otherwisejunk.signaturecraft.spigot.plugin.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.nbtapi.NBTItem;
+import otherwisejunk.signaturecraft.spigot.plugin.Model.PlayerSignature;
 
 
 public final class TagUtils{
-    public static ItemStack AddSignatureToItem(ItemStack item, Player signer){        
+    public static ItemStack AddSignatureToItem(ItemStack item, PlayerSignature Signature){        
         NBTItem nbtItem = new NBTItem(item);    
-        ArrayList<String> usernames = new ArrayList<String>();
-        String signerName = signer.getName();
+        ArrayList<PlayerSignature> signatures = new ArrayList<PlayerSignature>();        
 
         String signatureCSV = GetSignatureFromItem(nbtItem);
         // If we have an existing object for this tag, add the user to the existing tag!
         if(signatureCSV != ""){            
-            usernames = ArrayListFromCSV(signatureCSV);
+            signatures = ArrayListFromCSV(signatureCSV);
             
             // UNLESS they're already there, of course.
-            if(!usernames.contains(signerName)){
-                usernames.add(signerName);                
+            if(!ContainsUserSignature(signatures, Signature.Username)){
+                signatures.add(Signature);                
+            }
+            else{
+                PlayerSignature signature = GetSignatureByUsername(signatures, Signature.Username);
+                if(!signature.Message.equals(Signature.Message)){
+                    signatures.remove(signature);
+                    signature.Message = Signature.Message;
+                    signatures.add(signature);
+                }
             }
         }
         // Otherwise, make one with just them !!!
         else{
-            usernames.add((signerName));
+            signatures.add((Signature));
         }
-        
-        nbtItem = SetSignatureForItem(nbtItem, String.join(",", usernames));
+        ArrayList<String> signatureLines = BuildSignatureLines(signatures);
+        nbtItem = SetSignatureForItem(nbtItem, String.join(",", signatureLines));
         
         item = nbtItem.getItem();
         ItemMeta imd = item.getItemMeta();
 
-        imd.setLore(GetSignatureLore(usernames));
+        imd.setLore(GetSignatureLore(signatureLines));
         item.setItemMeta(imd);
         return item;
     }
-    public static ArrayList<String> ArrayListFromCSV(String csv){        
+    public static ArrayList<PlayerSignature> ArrayListFromCSV(String csv){     
+
         List<String> fixedLengthList = Arrays.asList(csv.split(","));
         fixedLengthList.removeAll(TagConstants.EmptyListValues);
-        return new ArrayList<String>(fixedLengthList);
+
+        List<PlayerSignature> signatures = new ArrayList<PlayerSignature>();
+        for (String string : fixedLengthList) {
+           if(string.contains(":")){
+               String[] signatureLine = string.split(":");
+               String signatureUsername = signatureLine[0].trim();
+               String signatureMessage = signatureLine[1].trim();
+
+               signatures.add(new PlayerSignature(signatureUsername,signatureMessage));
+           }
+           else{
+               signatures.add(new PlayerSignature(string));
+           }
+        }
+        return new ArrayList<PlayerSignature>(signatures);
     }
-    public static ItemStack RemoveSignatureFromItem(ItemStack item, Player signer){
+    public static ItemStack RemoveSignatureFromItem(ItemStack item, String username){
         NBTItem nbtItem = new NBTItem(item);
-        ArrayList<String> usernames = new ArrayList<String>();     
+        ArrayList<PlayerSignature> signatures = new ArrayList<PlayerSignature>();     
 
         String signatureCSV = GetSignatureFromItem(nbtItem);
         // If we have an existing object for this tag, remove the user!
         if(signatureCSV != null){
-            usernames = ArrayListFromCSV(signatureCSV);
+            signatures = ArrayListFromCSV(signatureCSV);
 
-            if(usernames.contains(signer.getName())){
-                usernames.remove(signer.getName());
-                nbtItem = SetSignatureForItem(nbtItem, String.join(",",usernames));
+            if(ContainsUserSignature(signatures, username)){
+                PlayerSignature Signature = GetSignatureByUsername(signatures, username);
+                
+                signatures.remove(Signature);
+                ArrayList<String> signatureLines = BuildSignatureLines(signatures);
+
+                nbtItem = SetSignatureForItem(nbtItem, String.join(",",signatureLines));
         
-
                 item = nbtItem.getItem();
                 ItemMeta imd = item.getItemMeta();
-                if(usernames.size() > 0){                    
-                    imd.setLore(GetSignatureLore(usernames));                    
+                if(signatures.size() > 0){                    
+                    imd.setLore(GetSignatureLore(signatureLines));                    
                 }
                 else{
                     imd.setLore(null);
@@ -96,5 +120,33 @@ public final class TagUtils{
         }
 
         return loreList;
+    }
+
+    public static boolean ContainsUserSignature(final List<PlayerSignature> signatures, final String username){
+        for(PlayerSignature signature : signatures){
+            if(signature.Username.equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }    
+
+    public static PlayerSignature GetSignatureByUsername(final List<PlayerSignature> signatures, final String username){
+        for(PlayerSignature signature : signatures){
+            if(signature.Username.equals(username)){
+                return signature;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<String> BuildSignatureLines(ArrayList<PlayerSignature> list){        
+        ArrayList<String> signatureStrings = new ArrayList<String>();
+        
+        for (PlayerSignature signature : list){
+            signatureStrings.add(signature.toString());
+        }
+
+        return signatureStrings;
     }
 }
