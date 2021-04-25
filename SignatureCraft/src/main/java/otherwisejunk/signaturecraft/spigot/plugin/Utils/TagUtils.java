@@ -50,7 +50,7 @@ public final class TagUtils{
     }
     public static ArrayList<PlayerSignature> ArrayListFromCSV(String csv){     
 
-        List<String> fixedLengthList = Arrays.asList(csv.split(","));
+        List<String> fixedLengthList = new ArrayList<String>(Arrays.asList(csv.split(",")));
         fixedLengthList.removeAll(TagConstants.EmptyListValues);
 
         List<PlayerSignature> signatures = new ArrayList<PlayerSignature>();

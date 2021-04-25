@@ -6,6 +6,7 @@ public class PlayerSignature {
 
     public PlayerSignature(String username){
         Username = username;
+        Message = "";
     }
 
     public PlayerSignature(String username, String message){
@@ -14,7 +15,7 @@ public class PlayerSignature {
     }
 
     public String toString(){
-        if(Message == null){
+        if(Message == null || Message == ""){
             return Username;
         }
         return String.format("%s: %s", Username, Message);
