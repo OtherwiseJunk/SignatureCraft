@@ -6,7 +6,7 @@
 
   <groupId>otherwisejunk.signaturecraft.spigot.plugin</groupId>
   <artifactId>SignatureCraft</artifactId>
-  <version>1.0.1</version>
+  <version>1.1.0</version>
   <packaging>jar</packaging>
 
   <name>SignatureCraft</name>
@@ -62,7 +62,7 @@
       </resource>
     </resources>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
-      <plugins>
+      <plugins>         
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
